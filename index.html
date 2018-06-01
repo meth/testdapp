@@ -4,7 +4,7 @@
       window.onload = () => {
         document.getElementById('page').innerHTML = 'Loaded!'
 
-        if (window.web3) {
+        if (window.web3 && window.web3.currentProvider) {
           document.getElementById('web3').innerHTML = 'Detected!'
 
           const accounts = document.getElementById('accounts')
