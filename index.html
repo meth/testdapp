@@ -2,12 +2,14 @@
   <head>
     <script type="text/javascript">
       window.onload = () => {
-        document.getElementById('ready').innerHTML = 'Loaded!'
-
-        const accounts = document.getElementById('accounts')
-        const blockNumber = document.getElementById('blockNumber')
+        document.getElementById('page').innerHTML = 'Loaded!'
 
         if (window.web3) {
+          document.getElementById('web3').innerHTML = 'Detected!'
+
+          const accounts = document.getElementById('accounts')
+          const blockNumber = document.getElementById('blockNumber')
+
           window.web3.eth.getAccounts((err, value) => {
             if (err) {
               accounts.innerHTML = err.toString()
@@ -29,8 +31,12 @@
   </head>
   <body>
     <p>
-      <strong>Status:</strong>
-      <span id="ready" />
+      <strong>Page:</strong>
+      <span id="page" />
+    </p>
+    <p>
+      <strong>web3:</strong>
+      <span id="web3" />
     </p>
     <p>
       <strong>Block num:</strong>
