@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <script type="text/javascript">
+      window.onload = () => {
+        document.getElementById('ready').innerHTML = 'Loaded!'
+
+        const accounts = document.getElementById('accounts')
+        const blockNumber = document.getElementById('blockNumber')
+
+        if (window.web3) {
+          window.web3.eth.getAccounts((err, value) => {
+            if (err) {
+              accounts.innerHTML = err.toString()
+            } else {
+              accounts.innerHTML = value.join(', ')
+            }
+          })
+
+          window.web3.eth.getBlockNumber((err, value) => {
+            if (err) {
+              blockNumber.innerHTML = err.toString()
+            } else {
+              blockNumber.innerHTML = value
+            }
+          })
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <p>
+      <strong>Status:</strong>
+      <span id="ready" />
+    </p>
+    <p>
+      <strong>Block num:</strong>
+      <span id="blockNumber" />
+    </p>
+    <p>
+      <strong>Accounts:</strong>
+      <span id="accounts" />
+    </p>
+  </body>
+</html>
