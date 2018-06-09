@@ -5,8 +5,22 @@
       window.addEventListener('load', () => {
         document.getElementById('page').innerHTML = 'Loaded!'
 
-        setTimeout(() => {
-          if (window.web3 && window.web3.currentProvider) {
+        let attempts = 0;
+        const timer = setInterval(() => {
+          const found = window.web3 && window.web3.currentProvider;
+
+          attempts += 1;
+
+          // stop at 10 attempts no matter what
+          if (10 === attempts) {
+            clearInterval(timer);
+
+            if (!found) {
+              alert('Unable to detect web3.currentProvider, tried 10 times!');
+            }
+          }
+
+          if (found) {
             window.web3 = new Web3(window.web3.currentProvider);
 
             document.getElementById('web3').innerHTML = 'Detected!'
