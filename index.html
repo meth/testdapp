@@ -33,6 +33,7 @@
                 accounts.innerHTML = err.toString()
               } else {
                 accounts.innerHTML = value.join(', ')
+                window.addresses = value
               }
             })
 
@@ -46,6 +47,20 @@
           }
         }, 100)
       })
+
+      const signData = () => {
+        if (window.addresses) {
+          const signature = document.getElementById('signature')
+
+          web3.eth.sign(window.addresses[0], '0xdeadbeef', (err, sig) => {
+            if (err) {
+              signature.innerHTML = err.toString()
+            } else {
+              signature.innerHTML = sig
+            }
+          })
+        }
+      }
     </script>
   </head>
   <body>
@@ -64,6 +79,11 @@
     <p>
       <strong>Accounts:</strong>
       <span id="accounts" />
+    </p>
+    <p>
+      <strong>Signature (0xdeadbeef using account 1):</strong>
+      <button onClick="signData()">Go</button>
+      <span id="signature" />
     </p>
   </body>
 </html>
