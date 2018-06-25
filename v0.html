@@ -1,0 +1,89 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/web3@0.20.6/dist/web3.js"></script>
+    <script type="text/javascript">
+      window.addEventListener('load', () => {
+        document.getElementById('page').innerHTML = 'Loaded!'
+
+        let attempts = 0;
+        const timer = setInterval(() => {
+          const found = window.web3 && window.web3.currentProvider;
+
+          attempts += 1;
+
+          // stop at 10 attempts no matter what
+          if (10 === attempts) {
+            clearInterval(timer);
+
+            if (!found) {
+              alert('Unable to detect web3.currentProvider, tried 10 times!');
+            }
+          }
+
+          if (found) {
+            window.web3 = new Web3(window.web3.currentProvider);
+
+            document.getElementById('web3').innerHTML = 'Detected!'
+
+            const accounts = document.getElementById('accounts')
+            const blockNumber = document.getElementById('blockNumber')
+
+            window.web3.eth.getAccounts((err, value) => {
+              if (err) {
+                accounts.innerHTML = err.toString()
+              } else {
+                accounts.innerHTML = value.join(', ')
+                window.addresses = value
+              }
+            })
+
+            window.web3.eth.getBlockNumber((err, value) => {
+              if (err) {
+                blockNumber.innerHTML = err.toString()
+              } else {
+                blockNumber.innerHTML = value
+              }
+            })
+          }
+        }, 100)
+      })
+
+      const signDataEthSign = () => {
+        const signature = document.getElementById('signatureEthSign')
+
+        if (window.web3 && window.addresses) {
+          web3.eth.sign(window.addresses[0], '0xdeadbeef', (err, sig) => {
+            if (err) {
+              signature.innerHTML = err.toString()
+            } else {
+              signature.innerHTML = sig
+            }
+          })
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <p>
+      <strong>Page:</strong>
+      <span id="page" />
+    </p>
+    <p>
+      <strong>web3:</strong>
+      <span id="web3">waiting...</span>
+    </p>
+    <p>
+      <strong>Block num:</strong>
+      <span id="blockNumber" />
+    </p>
+    <p>
+      <strong>Accounts:</strong>
+      <span id="accounts" />
+    </p>
+    <p>
+      <strong>web3.eth.sign (0xdeadbeef using account 1):</strong>
+      <button onClick="signDataEthSign()">Go</button>
+      <span id="signatureEthSign" />
+    </p>
+  </body>
+</html>
